@@ -49,3 +49,10 @@ export async function login(req, res, next) {
     next(error);
   }
 }
+
+export async function getMe(req, res) {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+}
