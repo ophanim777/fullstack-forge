@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.use(errorHandler);
 app.use("/api", routes);
 
 app.get("/api/health", (req, res) => {
