@@ -1,6 +1,8 @@
 import app from "./app.js";
 import { env } from "./config/env.js";
 
-app.listen(env.PORT, () => {
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
