@@ -1,5 +1,7 @@
 import { registerSchema } from "../validators/auth.validator.js";
 import { registerUser } from "../services/auth.service.js";
+import { loginSchema } from "../validators/auth.validator.js";
+import { loginUser } from "../services/auth.service.js";
 
 export async function register(req, res, next) {
   try {
