@@ -19,6 +19,10 @@ export async function registerUser(data) {
   );
 }
 
+export async function loginUser(data) {
+
+}
+
   const hashedPassword = await hashPassword(data.password);
 
   const user = await prisma.user.create({
