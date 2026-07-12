@@ -24,3 +24,28 @@ export async function register(req, res, next) {
     next(error);
   }
 }
+
+export async function login(req, res, next) {
+  try {
+    const body = loginSchema.parse(req.body);
+
+    const result = await loginUser(body);
+
+    res.status(200).json({
+      success: true,
+      message: "Login berhasil.",
+      user: {
+        id: result.user.id,
+        firstName: result.user.firstName,
+        lastName: result.user.lastName,
+        username: result.user.username,
+        email: result.user.email,
+        role: result.user.role,
+      },
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
