@@ -18,3 +18,7 @@ export function generateRefreshToken(payload) {
 export function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET);
 }
+
+export function verifyRefreshToken(token) {
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+}
