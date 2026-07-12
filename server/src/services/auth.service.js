@@ -1,6 +1,11 @@
 import { prisma } from "../config/prisma.js";
 import { hashPassword } from "../utils/password.js";
 import { ApiError } from "../utils/apiError.js";
+import { comparePassword } from "../utils/password.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/jwt.js";
 
 export async function registerUser(data) {
   const existingUser = await prisma.user.findFirst({
