@@ -25,6 +25,39 @@ export async function registerUser(data) {
 }
 
 export async function loginUser(data) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(401, "Email atau password salah.");
+  }
+
+  const isPasswordMatch = await comparePassword(
+    data.password,
+    user.password
+  );
+
+  if (!isPasswordMatch) {
+    throw new ApiError(401, "Email atau password salah.");
+  }
+
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = generateAccessToken(payload);
+  const refreshToken = generateRefreshToken(payload);
+
+  return {
+    user,
+    accessToken,
+    refreshToken,
+  };
 
 }
 
