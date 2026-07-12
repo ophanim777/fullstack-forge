@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { hashPassword } from "../utils/password.js";
+import { ApiError } from "../utils/apiError.js";
 
 export async function registerUser(data) {
   const existingUser = await prisma.user.findFirst({
@@ -12,8 +13,11 @@ export async function registerUser(data) {
   });
 
   if (existingUser) {
-    throw new Error("Email atau username sudah digunakan.");
-  }
+  throw new ApiError(
+    409,
+    "Email atau username sudah digunakan."
+  );
+}
 
   const hashedPassword = await hashPassword(data.password);
 
