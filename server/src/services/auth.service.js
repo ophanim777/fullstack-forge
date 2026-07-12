@@ -24,6 +24,23 @@ export async function registerUser(data) {
   );
 }
 
+
+  const hashedPassword = await hashPassword(data.password);
+
+  const user = await prisma.user.create({
+    data: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      username: data.username,
+      email: data.email,
+      password: hashedPassword,
+    },
+  });
+
+  return user;
+}
+
+
 export async function loginUser(data) {
   const user = await prisma.user.findUnique({
     where: {
@@ -59,19 +76,4 @@ export async function loginUser(data) {
     refreshToken,
   };
 
-}
-
-  const hashedPassword = await hashPassword(data.password);
-
-  const user = await prisma.user.create({
-    data: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      username: data.username,
-      email: data.email,
-      password: hashedPassword,
-    },
-  });
-
-  return user;
 }
