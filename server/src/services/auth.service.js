@@ -78,3 +78,31 @@ export async function loginUser(data) {
   };
 
 }
+
+export async function refreshAccessToken(refreshToken) {
+  let payload;
+
+  try {
+    payload = verifyRefreshToken(refreshToken);
+  } catch {
+    throw new ApiError(401, "Refresh token tidak valid.");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: payload.id,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(401, "User tidak ditemukan.");
+  }
+
+  const accessToken = generateAccessToken({
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  });
+
+  return accessToken;
+}
