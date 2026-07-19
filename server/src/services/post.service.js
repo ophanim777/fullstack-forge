@@ -123,3 +123,51 @@ export async function deletePost(postId, userId) {
     },
   });
 }
+
+
+export async function toggleLike(postId, userId) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) {
+    throw new ApiError(404, "Post tidak ditemukan.");
+  }
+
+  const existingLike = await prisma.like.findUnique({
+    where: {
+      userId_postId: {
+        userId,
+        postId,
+      },
+    },
+  });
+
+  if (existingLike) {
+    await prisma.like.delete({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+    });
+
+    return {
+      liked: false,
+    };
+  }
+
+  await prisma.like.create({
+    data: {
+      userId,
+      postId,
+    },
+  });
+
+  return {
+    liked: true,
+  };
+}
