@@ -17,8 +17,8 @@ app.use("/uploads", express.static(path.resolve("uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.use(errorHandler);
 app.use("/api", routes);
+app.use(errorHandler);
 
 app.get("/api/health", (req, res) => {
   res.json({
