@@ -75,3 +75,10 @@ export async function getMe(req, res) {
     user: req.user,
   });
 }
+
+export async function logout(req, res) {
+  res.status(200).json({
+    success: true,
+    message: "Logout berhasil.",
+  });
+}
