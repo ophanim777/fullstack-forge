@@ -64,3 +64,40 @@ export async function getPostById(id) {
 
   return post;
 }
+
+
+export async function updatePost(postId, userId, data) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) {
+    throw new ApiError(404, "Post tidak ditemukan.");
+  }
+
+  if (post.authorId !== userId) {
+    throw new ApiError(403, "Kamu tidak memiliki akses.");
+  }
+
+  return await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      content: data.content,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+}
