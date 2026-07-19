@@ -19,3 +19,22 @@ export async function createPost(userId, data) {
     },
   });
 }
+
+export async function getAllPosts() {
+  return await prisma.post.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+}
