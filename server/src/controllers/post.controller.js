@@ -3,7 +3,8 @@ import { createPost as createPostService,
   getAllPosts, 
   getPostById, 
   updatePost as updatePostService, 
-  deletePost as deletePostService, } from "../services/post.service.js";
+  deletePost as deletePostService, 
+  toggleLike, } from "../services/post.service.js";
 import { updatePostSchema } from "../validators/post.validator.js";
 
 
@@ -79,6 +80,26 @@ export async function deletePost(req, res, next) {
     res.status(200).json({
       success: true,
       message: "Post berhasil dihapus.",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+export async function likePost(req, res, next) {
+  try {
+    const result = await toggleLike(
+      req.params.id,
+      req.user.id
+    );
+
+    res.status(200).json({
+      success: true,
+      message: result.liked
+        ? "Post berhasil disukai."
+        : "Like berhasil dihapus.",
+      liked: result.liked,
     });
   } catch (error) {
     next(error);
