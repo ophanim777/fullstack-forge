@@ -2,7 +2,8 @@ import { createPostSchema } from "../validators/post.validator.js";
 import { createPost as createPostService, 
   getAllPosts, 
   getPostById, 
-  updatePost as updatePostService,} from "../services/post.service.js";
+  updatePost as updatePostService, 
+  deletePost as deletePostService, } from "../services/post.service.js";
 import { updatePostSchema } from "../validators/post.validator.js";
 
 
@@ -62,6 +63,22 @@ export async function updatePost(req, res, next) {
       success: true,
       message: "Post berhasil diperbarui.",
       post,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deletePost(req, res, next) {
+  try {
+    await deletePostService(
+      req.params.id,
+      req.user.id
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Post berhasil dihapus.",
     });
   } catch (error) {
     next(error);
