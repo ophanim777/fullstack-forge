@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma.js";
+import { ApiError } from "../utils/apiError.js";
 
 export async function createPost(userId, data) {
   return await prisma.post.create({
@@ -37,4 +38,29 @@ export async function getAllPosts() {
       },
     },
   });
+}
+
+export async function getPostById(id) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  if (!post) {
+    throw new ApiError(404, "Post tidak ditemukan.");
+  }
+
+  return post;
 }
