@@ -6,6 +6,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/jwt.js";
+import { verifyRefreshToken } from "../utils/jwt.js";
 
 export async function registerUser(data) {
   const existingUser = await prisma.user.findFirst({
