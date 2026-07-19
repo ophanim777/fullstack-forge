@@ -1,7 +1,7 @@
 import { prisma } from "../config/prisma.js";
 
 export async function createPost(userId, data) {
-  return prisma.post.create({
+  return await prisma.post.create({
     data: {
       content: data.content,
       authorId: userId,
