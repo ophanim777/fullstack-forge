@@ -20,3 +20,26 @@ export async function updateProfile(userId, data) {
     },
   });
 }
+
+export async function updateAvatar(userId, avatarPath) {
+  return prisma.user.update({
+    where: {
+      id: userId,
+    },
+
+    data: {
+      avatar: avatarPath,
+    },
+
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+      email: true,
+      bio: true,
+      avatar: true,
+      role: true,
+    },
+  });
+}
