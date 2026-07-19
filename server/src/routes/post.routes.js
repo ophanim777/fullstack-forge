@@ -4,7 +4,8 @@ import { createPost,
     getPosts,  
     getPost, 
     updatePost, 
-    deletePost, } from "../controllers/post.controller.js";
+    deletePost, 
+    likePost, } from "../controllers/post.controller.js";
 
 const router = Router();
 
@@ -13,6 +14,8 @@ router.get("/", getPosts);
 router.get("/:id", getPost);
 
 router.post("/", authenticate, createPost);
+
+router.post("/:id/like", authenticate, likePost);
 
 router.patch("/:id", authenticate, updatePost);
 
