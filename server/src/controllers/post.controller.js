@@ -1,5 +1,7 @@
 import { createPostSchema } from "../validators/post.validator.js";
-import { createPost as createPostService, getAllPosts, } from "../services/post.service.js";
+import { createPost as createPostService, 
+  getAllPosts, 
+  getPostById, } from "../services/post.service.js";
 
 export async function createPost(req, res, next) {
   try {
@@ -24,6 +26,19 @@ export async function getPosts(req, res, next) {
     res.status(200).json({
       success: true,
       posts,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getPost(req, res, next) {
+  try {
+    const post = await getPostById(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      post,
     });
   } catch (error) {
     next(error);
