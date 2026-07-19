@@ -101,3 +101,25 @@ export async function updatePost(postId, userId, data) {
     },
   });
 }
+
+export async function deletePost(postId, userId) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) {
+    throw new ApiError(404, "Post tidak ditemukan.");
+  }
+
+  if (post.authorId !== userId) {
+    throw new ApiError(403, "Kamu tidak memiliki akses.");
+  }
+
+  await prisma.post.delete({
+    where: {
+      id: postId,
+    },
+  });
+}
