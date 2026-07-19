@@ -52,6 +52,23 @@ export async function login(req, res, next) {
   }
 }
 
+export async function refresh(req, res, next) {
+  try {
+    const body = refreshTokenSchema.parse(req.body);
+
+    const accessToken = await refreshAccessToken(
+      body.refreshToken
+    );
+
+    res.json({
+      success: true,
+      accessToken,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getMe(req, res) {
   res.status(200).json({
     success: true,
